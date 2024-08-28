@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/setLock"
+        android:enabled="true"
+        android:title="@string/lockon"
+        app:showAsAction="collapseActionView" />
+
+    <item
+        android:id="@+id/offLock"
+        android:enabled="true"
+        android:title="@string/lockoff"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/changePw"
+        android:enabled="true"
+        android:title="@string/changepw"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/logout"
+        android:enabled="true"
+        android:title="@string/logout"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/withdraw"
+        android:enabled="true"
+        android:title="@string/withdraw"
+        app:showAsAction="ifRoom" />
+
+</menu>
+

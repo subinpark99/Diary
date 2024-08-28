@@ -1,0 +1,108 @@
+plugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
+    id("kotlin-kapt")
+    id("kotlin-parcelize")
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'  // 카카오 로그인 manifest
+    id("androidx.navigation.safeargs.kotlin")
+    id 'dagger.hilt.android.plugin'
+}
+
+// local.properties에서 선언한 값들을 불러와 주기 위함
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def kakaoApiKey = properties.getProperty('kakao.native.key')
+
+android {
+    namespace 'com.dev.angry_diary'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.dev.angry_diary"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // api key 변수 지정
+        buildConfigField "String", "KAKAO_APP_KEY", properties['kakao.app.key']
+        manifestPlaceholders = [KAKAO_APP_KEY: kakaoApiKey]
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.android.datatransport:transport-runtime:3.3.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.0'
+
+
+    // Navigation Component
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.7'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
+
+    // Room components
+    implementation "androidx.room:room-runtime:2.6.1"
+    ksp "androidx.room:room-compiler:2.6.1"
+    implementation "androidx.room:room-ktx:2.6.1"
+    androidTestImplementation "androidx.room:room-testing:2.6.1"
+
+    // Lifecycle components
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.8.2"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.8.2"
+
+    // Kotlin components
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+
+    // Kotlin serialization
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0'
+
+    // graph
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    // 카카오 로그인 모듈
+    implementation "com.kakao.sdk:v2-user:2.12.1"
+
+
+    // EncryptedSharedPreference
+    implementation "androidx.security:security-crypto:1.0.0"
+
+    // Hilt
+    implementation 'com.google.dagger:hilt-android:2.51.1'
+    kapt 'com.google.dagger:hilt-compiler:2.51.1'
+
+    // datastore
+    implementation "androidx.datastore:datastore-preferences:1.1.1"
+
+}

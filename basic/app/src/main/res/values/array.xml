@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="my_array">
+        <item>설정 (클릭하세요)</item>
+        <item>잠금 설정하기</item>
+        <item>잠금 해제하기</item>
+        <item>비밀번호 변경하기</item>
+    </string-array>
+</resources>

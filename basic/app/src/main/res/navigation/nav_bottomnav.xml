@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_bottomnav"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.dev.angry_diary.ui.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/myPageFragment"
+        android:name="com.dev.angry_diary.ui.mypage.MyPageFragment"
+        android:label="MyPageFragment"
+        tools:layout="@layout/fragment_mypage">
+        <action
+            android:id="@+id/action_myPageFragment_to_lockActivity"
+            app:destination="@id/lockActivity" />
+    </fragment>
+    <dialog
+        android:id="@+id/addDialog"
+        android:name="com.dev.angry_diary.ui.home.AddDialog"
+        android:label="AddDialog"
+        tools:layout="@layout/dialog_add" />
+    <activity
+        android:id="@+id/lockActivity"
+        android:name="com.dev.angry_diary.ui.mypage.LockActivity"
+        android:label="LockActivity"
+        tools:layout="@layout/activity_password">
+        <argument
+            android:name="type"
+            app:argType="integer" />
+    </activity>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.dev.angry_diary.ui.home.MainActivity"
+        android:label="MainActivity"
+        tools:layout="@layout/activity_main" />
+
+</navigation>

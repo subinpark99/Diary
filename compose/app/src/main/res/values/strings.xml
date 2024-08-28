@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Angry Diary</string>
+
+    <!--다이어리 작성-->
+    <string name="cancel">취소</string>
+    <string name="save">저장</string>
+    <string name="write">작성하기</string>
+    <string name="input">내용을 입력해주세요!</string>
+
+    <!--내 정보-->
+    <string name="my_info">내 정보 </string>
+    <string name="nickname">닉네임 : </string>
+    <string name="diary_count">총 글 개수 : </string>
+    <string name="monthly_count">달 별 짜증개수 </string>
+
+    <!--Setting-->
+    <string name="lock">잠금 설정하기</string>
+    <string name="unlock">잠금 해제하기</string>
+    <string name="change_pw">비밀번호 변경하기</string>
+    <string name="logout">로그아웃</string>
+    <string name="withdraw">회원탈퇴</string>
+
+    <!--비밀번호-->
+    <string name="putpw">비밀번호를 입력하세요</string>
+    <string name="reput">다시 한번 입력하세요</string>
+    <string name="wrong">비밀번호가 틀립니다</string>
+    <string name="reput_new">새로운 비밀번호 입력</string>
+    <string name="reput_new2">새로운 비밀번호 다시 입력</string>
+    <string name="delete">delete</string>
+    <string name="_0">0</string>
+    <string name="clear">clear</string>
+    <string name="_9">9</string>
+    <string name="_8">8</string>
+    <string name="_7">7</string>
+    <string name="_6">6</string>
+    <string name="_5">5</string>
+    <string name="_4">4</string>
+    <string name="_3">3</string>
+    <string name="_2">2</string>
+    <string name="_1">1</string>
+
+</resources>
