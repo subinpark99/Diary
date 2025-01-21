@@ -15,12 +15,12 @@ class LockViewModel @Inject constructor(
     private val lockRepository: LockRepository
 ) : ViewModel() {
 
-
-    val password: StateFlow<String?> = lockRepository.currentPassword.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = null
-    )
+    val password: StateFlow<String?> = lockRepository.currentPassword
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null
+        )
 
     fun setPassword(password: String) {
         viewModelScope.launch {
@@ -34,7 +34,7 @@ class LockViewModel @Inject constructor(
         }
     }
 
-    fun unlockPassword(password: String): Boolean {
+   fun unlockPassword(password: String): Boolean {
         return lockRepository.unlockPassword(password)
     }
 }

@@ -1,53 +1,35 @@
 package com.example.composediary.data.repository
 
-import com.example.composediary.data.local.dao.UserDao
-import com.example.composediary.data.local.model.User
 import com.example.composediary.util.UserPreferenceUtil
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 interface UserRepository {
-    suspend fun insertUser(user: User)
-    suspend fun getUserById(): User
-    suspend fun deleteUser()
-    suspend fun saveTokenId(tokenId: String)
-    suspend fun setAutoLogin(boolean: Boolean)
-    fun getAutoLoginState() : Boolean
+    fun saveUserId(userId: Long)
+    fun getUserId(): Long
+    fun removeUserId()
+    fun isLoggedIn(): Boolean
 }
 
 class UserRepositoryImpl @Inject constructor(
-    private val userDao: UserDao,
     private val userPreferences: UserPreferenceUtil,
 ) : UserRepository {
 
-    // 토큰 저장
-    override suspend fun saveTokenId(tokenId: String) {
-        userPreferences.setTokenId(tokenId)
+
+    override fun saveUserId(userId: Long) {  // 로그인 시 저장
+      userPreferences.setUserId(userId)
     }
 
-    override suspend fun setAutoLogin(boolean: Boolean) {
-       userPreferences.setAutoLogin(boolean)
+    override fun getUserId(): Long {
+        return userPreferences.getUserId()
     }
 
-    override fun getAutoLoginState() :Boolean {
-        return userPreferences.getAutoLoginState()
+    override fun removeUserId() {  // 로그아웃, 회원탈퇴 시
+        return userPreferences.removeUserId()
     }
 
-    // 토큰 조회
-    private fun getUserTokenId(): String {
-        return userPreferences.getTokenId() ?: "NoToken" // 기본값 설정
+    // 사용자 ID가 존재하는지 확인 (로그인 상태 확인)
+    override fun isLoggedIn(): Boolean {
+        val userId = getUserId()
+        return userId!=0L
     }
-
-    override suspend fun insertUser(user: User) {
-        userDao.insertUser(user)
-    }
-
-    override suspend fun getUserById(): User = userDao.getUserById(getUserTokenId())
-
-
-    override suspend fun deleteUser() = userDao.deleteAll(getUserTokenId())
-
 }

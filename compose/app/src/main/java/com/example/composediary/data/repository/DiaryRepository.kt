@@ -3,8 +3,8 @@ package com.example.composediary.data.repository
 import com.example.composediary.data.local.dao.DiaryDao
 import com.example.composediary.data.local.model.Diary
 import com.example.composediary.data.local.model.DiaryMonthlyCount
-import kotlinx.coroutines.flow.Flow
 import com.example.composediary.util.UserPreferenceUtil
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 
@@ -14,36 +14,35 @@ interface DiaryRepository {
     fun getDiariesByMonth(month: String): Flow<List<Diary>>
     fun getDiaryCount(): Flow<Int>
     fun getDiaryMonthlyCount(year: String): Flow<List<DiaryMonthlyCount>>
+    fun getUserId(): Long
 }
+
 
 class DiaryRepositoryImpl @Inject constructor(
     private val diaryDao: DiaryDao,
     private val userPreferences: UserPreferenceUtil,
 ) : DiaryRepository {
 
-
-    // 토큰 조회
-    private fun getUserTokenId(): String {
-        return userPreferences.getTokenId() ?: "NoToken" // 기본값 설정
+    override fun getUserId(): Long {
+        return userPreferences.getUserId()
     }
 
     override suspend fun insertDiary(diary: Diary) {
-        val tokenId = getUserTokenId()
-        val diaryWithToken = diary.copy(tokenId = tokenId) // 토큰을 추가한 다이어리 객체 생성
-        diaryDao.addContent(diaryWithToken)
+        val userId = getUserId()
+        val diaryWithId= diary.copy(userId = userId) // 사용자 아이디를 추가한 다이어리 객체 생성
+        diaryDao.addContent(diaryWithId)
     }
 
     override suspend fun deleteAllDiary() {
-        diaryDao.deleteAll(getUserTokenId())
+        diaryDao.deleteAll(getUserId())
     }
 
     override fun getDiariesByMonth(month: String): Flow<List<Diary>> =
-        diaryDao.readMonthData(month, getUserTokenId())
+        diaryDao.readMonthData(month, getUserId())
 
-    override fun getDiaryCount(): Flow<Int> = diaryDao.getContentsCount(getUserTokenId())
+    override fun getDiaryCount(): Flow<Int> = diaryDao.getContentsCount(getUserId())
 
     override fun getDiaryMonthlyCount(year: String): Flow<List<DiaryMonthlyCount>> =
-        diaryDao.getDiaryMonthlyCount(year, getUserTokenId())
-
+        diaryDao.getDiaryMonthlyCount(year, getUserId())
 
 }

@@ -4,14 +4,17 @@ package com.example.composediary.data.repository
 import com.example.composediary.util.LockPreferenceUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 interface LockRepository {
-    val currentPassword: StateFlow<String?>
+    val currentPassword: Flow<String?>
 
     suspend fun setPassword(password: String)
     suspend fun removePassword()
@@ -23,13 +26,7 @@ class LockRepositoryImpl @Inject constructor(
     private val lockPreferenceUtil: LockPreferenceUtil
 ) : LockRepository {
 
-    override val currentPassword: StateFlow<String?> = lockPreferenceUtil.password
-        .map { it }
-        .stateIn(
-            scope = CoroutineScope(Dispatchers.IO),
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = null
-        )
+    override val currentPassword: Flow<String?> = lockPreferenceUtil.password
 
     override suspend fun setPassword(password: String) {
         lockPreferenceUtil.setPassword(password)
@@ -40,7 +37,9 @@ class LockRepositoryImpl @Inject constructor(
     }
 
     override fun unlockPassword(password: String): Boolean {
-        return currentPassword.value == password
+        return runBlocking {
+            currentPassword.firstOrNull() == password
+        }
     }
 }
 

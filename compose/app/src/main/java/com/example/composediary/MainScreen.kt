@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.dev.angry_diary.viewmodel.DiaryViewModel
 import com.example.composediary.data.local.model.Diary
 import com.example.composediary.navigation.BottomNavigationBar
 import com.example.composediary.navigation.HOME
@@ -34,13 +33,14 @@ import com.example.composediary.navigation.MYPAGE
 import com.example.composediary.navigation.NavigationGraph
 import com.example.composediary.ui.home.AddDiaryDialog
 import com.example.composediary.ui.theme.Orange
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import com.example.composediary.ui.viewmodel.DiaryViewModel
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainScreen(
-    diaryViewModel: DiaryViewModel = hiltViewModel()
+    diaryViewModel: DiaryViewModel = hiltViewModel(),
 ) {
 
     val navController = rememberNavController()
@@ -100,7 +100,6 @@ fun MainScreen(
             onSave = {
                 addDiary(diaryText, diaryViewModel)
                 isDialogOpen = false  // 다이얼로그 닫기
-                navController.popBackStack()  // 이전 화면으로 돌아가기
                 diaryText = ""
             })
     }
@@ -118,10 +117,10 @@ fun addDiary(content: String, diaryViewModel: DiaryViewModel) {
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
     // 날짜와 시간을 문자열로 변형
-    val date = now.format(dateFormatter) // 예: "2024-07-23"
+    val date = now.format(dateFormatter)
     val time = now.format(timeFormatter)
 
-    val diary = Diary(contentId = 0, content = content, date = date, time = time)
+    val diary = Diary(contentId = 0, content = content, date, time)
     diaryViewModel.addDiary(diary)
 }
 

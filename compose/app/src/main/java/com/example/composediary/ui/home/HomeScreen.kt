@@ -27,27 +27,27 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.dev.angry_diary.viewmodel.DiaryViewModel
 import com.example.composediary.R
 import com.example.composediary.data.local.model.Diary
 import com.example.composediary.ui.theme.DarkBlue
 import com.example.composediary.ui.theme.Gray
 import com.example.composediary.ui.theme.RedWhite
-import java.time.format.DateTimeFormatter
-import androidx.compose.runtime.*
+import com.example.composediary.ui.viewmodel.DiaryViewModel
+import org.threeten.bp.format.DateTimeFormatter
 
 @SuppressLint("SuspiciousIndentation")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-
 fun HomeScreen(
     diaryViewModel: DiaryViewModel = hiltViewModel()
 ) {
@@ -64,9 +64,18 @@ fun HomeScreen(
         // 날짜별로 내용을 그룹화
         val groupedDiaries = diaries.groupBy { it.date }
 
-        LazyColumn {
-            items(groupedDiaries.toList()) { (date, diary) ->
-                DateItemView(date = date, diary)
+        if (groupedDiaries.isEmpty()) {
+            Text(
+                text = stringResource(id = R.string.no_diary),
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 10.dp)
+            )
+        } else {
+            LazyColumn {
+                items(groupedDiaries.toList()) { (date, diary) ->
+                    DateItemView(date = date, diary)
+                }
             }
         }
     }
@@ -118,6 +127,7 @@ fun DateHeaderView(diaryViewModel: DiaryViewModel) {  // 연월 표시, 이전/�
 
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DateItemView(date: String, diaries: List<Diary>) {   // 날짜 아이템
     Column(
@@ -178,6 +188,7 @@ fun DateItemView(date: String, diaries: List<Diary>) {   // 날짜 아이템
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ContentItemView(time: String, content: String) {  // 날짜별 다이어리 내용
 
@@ -192,6 +203,7 @@ fun ContentItemView(time: String, content: String) {  // 날짜별 다이어리 
 
             )
     ) {
+
         Column {
             Text(text = "작성 시간 : $time", modifier = Modifier.padding(6.dp), color = Gray)
             Text(text = content, modifier = Modifier.padding(6.dp), fontSize = 18.sp)

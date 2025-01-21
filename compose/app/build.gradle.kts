@@ -11,7 +11,8 @@ plugins {
 // local.properties에서 선언한 값들을 불러오기 위한 코드
 val properties = Properties()
 properties.load(project.rootProject.file("local.properties").inputStream())
-val kakaoApiKey: String = properties.getProperty("kakao.native.key")
+val kakaoApiKey = properties.getProperty("KAKAO_API_KEY")?:""
+val nativeAppKey = properties.getProperty("NATIVE_APP_KEY")?:""
 
 
 android {
@@ -31,8 +32,8 @@ android {
             useSupportLibrary = true
         }
 
-        buildConfigField("String", "KAKAO_APP_KEY", "\"$kakaoApiKey\"")
-        manifestPlaceholders["KAKAO_APP_KEY"] = kakaoApiKey
+        buildConfigField("String", "KAKAO_API_KEY", kakaoApiKey)
+        manifestPlaceholders["NATIVE_APP_KEY"] = nativeAppKey
 
     }
 
@@ -109,6 +110,7 @@ dependencies {
 
     // Datastore for preferences
     implementation(libs.datastore.preferences)
+    implementation (libs.androidx.security.crypto.ktx)
 
     // Kakao SDK for user authentication
     implementation(libs.kakao.sdk.user)
@@ -126,4 +128,7 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
 
+    implementation (libs.threetenabp)
+
 }
+

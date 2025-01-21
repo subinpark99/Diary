@@ -3,7 +3,6 @@ package com.dev.angry_diary.di
 import android.content.Context
 import androidx.room.Room
 import com.example.composediary.data.local.dao.DiaryDao
-import com.example.composediary.data.local.dao.UserDao
 import com.example.composediary.data.local.database.AppDatabase
 import com.example.composediary.data.repository.DiaryRepository
 import com.example.composediary.data.repository.DiaryRepositoryImpl
@@ -38,20 +37,14 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideUserDao(appDatabase: AppDatabase): UserDao {
-        return appDatabase.userDao()
-    }
-
-    @Provides
-    @Singleton
     fun provideDiaryDao(appDatabase: AppDatabase): DiaryDao {
         return appDatabase.diaryDao()
     }
 
     @Provides
     @Singleton
-    fun provideUserRepository(userDao: UserDao, userPref: UserPreferenceUtil): UserRepository {
-        return UserRepositoryImpl(userDao, userPref)
+    fun provideUserRepository( userPref: UserPreferenceUtil): UserRepository {
+        return UserRepositoryImpl( userPref)
     }
 
     @Provides

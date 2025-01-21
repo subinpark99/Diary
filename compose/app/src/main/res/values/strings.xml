@@ -6,6 +6,7 @@
     <string name="save">저장</string>
     <string name="write">작성하기</string>
     <string name="input">내용을 입력해주세요!</string>
+    <string name="no_diary">작성된 다이어리가 없습니다ㅜ.ㅜ</string>
 
     <!--내 정보-->
     <string name="my_info">내 정보 </string>

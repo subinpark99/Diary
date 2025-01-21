@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.dev.angry_diary.viewmodel.DiaryViewModel
+import com.example.composediary.ui.viewmodel.DiaryViewModel
 import com.dev.angry_diary.viewmodel.LockViewModel
 import com.dev.angry_diary.viewmodel.UserViewModel
 import com.example.composediary.R

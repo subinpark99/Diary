@@ -2,25 +2,26 @@ package com.example.composediary.util
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.longPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 
 class UserPreferenceUtil @Inject constructor(context: Context) {
-    private val prefs: SharedPreferences = context.getSharedPreferences("tokenId", 0)
 
-    fun getTokenId(): String? = prefs.getString("tokenId", "")
+    companion object {
+        private const val PREF_NAME = "user_preferences"
+        private const val USER_ID = "user_id"
+    }
 
-    fun setTokenId(str: String) = prefs.edit().putString("tokenId", str).apply()
+    private val prefs: SharedPreferences =
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
-    fun setAutoLogin(boolean: Boolean) = prefs.edit().putBoolean("login", boolean).apply()
+    fun setUserId(userId: Long) = prefs.edit().putLong(USER_ID, userId).apply()
 
-    fun getAutoLoginState() = prefs.getBoolean("login", false)
+    fun getUserId() = prefs.getLong(USER_ID, 0L)
+
+    fun removeUserId() {
+        prefs.edit().remove(USER_ID).apply()
+    }
+
 }
+

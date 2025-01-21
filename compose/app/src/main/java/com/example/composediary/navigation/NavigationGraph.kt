@@ -3,6 +3,7 @@ package com.example.composediary.navigation
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
@@ -37,9 +38,7 @@ fun NavigationGraph(
     val password by lockViewModel.password.collectAsState()
     var unlocked by remember { mutableStateOf(false) }
 
-    val isLoggedIn by userViewModel.autoLoginState.collectAsState()
-
-    val startDestination = if (!isLoggedIn) {
+    val startDestination = if (!userViewModel.autoLoginState()) {
         LOGIN // 로그인 상태가 아니면 로그인 화면으로 이동
     } else if (!password.isNullOrEmpty() && !unlocked) {
         PASSWORD // 로그인 상태인데 잠금이 설정되어 있고, 잠금이 해제되지 않은 경우

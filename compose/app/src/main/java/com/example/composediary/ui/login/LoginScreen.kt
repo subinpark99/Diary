@@ -17,7 +17,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dev.angry_diary.viewmodel.UserViewModel
 import com.example.composediary.R
-import com.example.composediary.data.local.model.User
 import com.example.composediary.ui.theme.DarkBlue
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
@@ -76,24 +74,6 @@ fun LoginScreen(onLoginSuccess: () -> Unit, userViewModel: UserViewModel = hiltV
             )
         }
     }
-
-
-    // 로그인 상태 확인
-    LaunchedEffect(Unit) {
-        checkLoginStatus(context, onLoginSuccess)
-    }
-}
-
-
-fun checkLoginStatus(context: Context, onLoginSuccess: () -> Unit) {
-    UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
-        if (error != null) {
-            Toast.makeText(context, "로그인 기록 없음", Toast.LENGTH_SHORT).show()
-        } else if (tokenInfo != null) {
-            Toast.makeText(context, "자동 로그인", Toast.LENGTH_SHORT).show()
-            onLoginSuccess() // 자동 로그인 성공 시 콜백 호출
-        }
-    }
 }
 
 
@@ -110,13 +90,7 @@ fun setupLoginButton(context: Context, onLoginSuccess: () -> Unit, userViewModel
 
             UserApiClient.instance.me { user, _ ->
                 user?.let {
-                    val tokenId = token.accessToken
-                    val userName = it.kakaoAccount?.profile?.nickname ?: ""
-                    val userEmail = it.kakaoAccount?.email ?: ""
-
-                    val userData = User(userEmail, userName, tokenId)
-                    userViewModel.addUser(userData)
-
+                    userViewModel.login(userId = user.id!!)
                 }
             }
         }

@@ -2,7 +2,6 @@ package com.example.composediary.ui.mypage
 
 
 import android.os.Build
-import androidx.compose.runtime.*
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
@@ -30,6 +29,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,8 +44,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.dev.angry_diary.viewmodel.DiaryViewModel
-import com.dev.angry_diary.viewmodel.UserViewModel
 import com.example.composediary.R
 import com.example.composediary.data.local.model.DiaryMonthlyCount
 import com.example.composediary.ui.theme.Blue
@@ -60,6 +58,7 @@ import com.example.composediary.ui.theme.LittleGreen
 import com.example.composediary.ui.theme.Orange
 import com.example.composediary.ui.theme.Red
 import com.example.composediary.ui.theme.Yellow
+import com.example.composediary.ui.viewmodel.DiaryViewModel
 import kotlinx.coroutines.launch
 
 
@@ -68,12 +67,10 @@ import kotlinx.coroutines.launch
 fun MyPageScreen(
     navController: NavController,
     diaryViewModel: DiaryViewModel = hiltViewModel(),
-    userViewModel: UserViewModel = hiltViewModel(),
     scaffoldState: ScaffoldState,
 ) {
     val scope = rememberCoroutineScope()
 
-    val user by userViewModel.userState.collectAsState()
     val diaryCounts by diaryViewModel.diariesCountState.collectAsState()
     val monthlyCount by diaryViewModel.monthlyDiaryCountState.collectAsState()
 
@@ -139,7 +136,6 @@ fun MyPageScreen(
                     .padding(15.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                MyInfo(R.string.nickname, user.userName)
                 MyInfo(R.string.diary_count, "$diaryCounts 개")
                 Text(text = stringResource(id = R.string.monthly_count), fontSize = 20.sp)
                 MonthlyDiaryGraph(

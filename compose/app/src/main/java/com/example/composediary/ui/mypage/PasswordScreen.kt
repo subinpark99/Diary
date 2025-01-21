@@ -45,7 +45,7 @@ fun PasswordScreen(
     var step by remember { mutableIntStateOf(1) } // 비밀번호 변경 단계
 
     // 비밀번호 입력 핸들러
-    fun handlePasswordInput(number: String) {
+     fun handlePasswordInput(number: String) {
         if (inputPassword.length < 4) {
             inputPassword += number
         }
